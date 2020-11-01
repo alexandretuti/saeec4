@@ -3,7 +3,7 @@
         <meta charset="UTF-8">
         <title>::SAEEC:: - Cadastro de Notas - </title>
         <script src="lib/angular/angular.js"></script>
-        <script src=https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.8.2/angular-messages.js>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.8.2/angular-messages.js"></script> 
         <script src="/node_modules/angular-locale-pt-br/angular-locale_pt-br.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
@@ -43,11 +43,11 @@
                 $scope.app = "Lista notas";
                 $scope.notas = [];
 
-                $scope.adicionarnota = function (nota) {
+                $scope.adicionarNota = function (nota) {
                     $http.post("http://localhost:8080/notas", nota).then(function (data) {
                         delete $scope.nota;
                         $scope.notaForm.$setPristine();
-                        carregarnotas();    
+                        carregarNotas();    
                     
                     });    
                 };
@@ -57,34 +57,34 @@
                     $scope.direcaoDaOrdenacao =  !$scope.direcaoDaOrdenacao;
                 };
 
-                var carregarnotas = function () {
+                var carregarNotas = function () {
                     $http.get("http://localhost:8080/listaNotas/").then(function(data,status ) {
                         console.log(data);
                         $scope.notas = data.data; 
                     });
                 };
 
-                $scope.isnotaselecionado = function (notas) {
+                $scope.isNotaSelecionada = function (notas) {
                     return notas.some(function (nota) {
                         return nota.selecionado;
                     });
                 };
 
-                $scope.apagarnotas = function (notas) {
+                $scope.apagarNotas = function (notas) {
 
                         var idDel = null;                        
                         if(notas.some(function(nota) {
                             console.log("Passei aqui");
-                            idDel=nota.id;
+                            idDel=nota.idNota;
                         }));
 
                         $http.delete("http://localhost:8080/notas/" + idDel).then(function (data,status) {
                         console.log(data);
-                        carregarnotas();      
+                        carregarNotas();      
                     }); 
                 }; 
 
-                carregarnotas();      
+                carregarNotas();      
 
                 $("#publicacao").mask("00/00/0000");
             });
@@ -94,7 +94,7 @@
     </head>
     <body ng-controller="listaNotasCtrl">
         <div class="jumbotron">
-            <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?"/>
+            <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Digite o nome do aluno para filtrar"/>
             <table class="table table-striped table-dark">
                 <tr>
                     <th></th>
@@ -117,20 +117,8 @@
                 <input class="form-control" type="text" ng-model="nota.nota" placeholder="Nota"/>
             </form>
 
-            <!--Início das Validações-->
-            <div ng-messages="notaForm.nome.$error" class="alert alert-danger">
-                <div ng-message="required">
-                    Por favor, preencha o campo nome! 
-                </div>
-                <div ng-message="minlength">
-                    O campo nome deve ter no mínimo 5 caracteres. 
-                </div>
-            </div>
-
-            <!--Final das validações-->
-
-            <button class="btn btn-primary btn-block" ng-click="adicionarnota(nota)" ng-disabled="notaForm.$invalid">Adicionar nota</button>
-            <button class="btn btn-danger btn-block"  ng-click="apagarnotas(notas)" ng-if="isnotaselecionado(notas)">Apagar nota</button>
+            <button class="btn btn-primary btn-block" ng-click="adicionarNota(nota)" ng-disabled="notaForm.$invalid">Adicionar nota</button>
+            <button class="btn btn-danger btn-block"  ng-click="apagarNotas(notas)" ng-if="isNotaSelecionada(notas)">Apagar nota</button>
         </div>
     </body>
 </html>
