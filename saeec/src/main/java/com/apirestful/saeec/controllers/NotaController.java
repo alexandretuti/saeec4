@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apirestful.saeec.dto.NotaDTO;
@@ -33,7 +32,7 @@ public class NotaController {
 	private NotaService notaService; 
 
 	@GetMapping("/notas")
-	@ApiOperation("Retorna todas as notas")
+	@ApiOperation(value="Retorna todas as notas")
 	public ResponseEntity<List<NotaDTO>> getAllNotas() {
 
 		List<NotaDTO> lstNotas = notaService.findAll();
@@ -46,6 +45,7 @@ public class NotaController {
 	}
 	
 	@GetMapping("/listaNotas")
+	@ApiOperation(value="Retorna todas as notas")
 	public ResponseEntity<List<Nota>> listarAllNotas() {
 
 		List<Nota> lstNotas = notaService.listarNotas();
